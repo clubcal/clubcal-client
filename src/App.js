@@ -17,13 +17,19 @@ export default function App() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    Tabletop.init({
-      key:
-        "https://docs.google.com/spreadsheets/u/1/d/1EoVnDcOIu9UbrVCsZrIlX0aNj0wVkIGEjuLMtaXWDVA/pubhtml",
-      simpleSheet: true,
-    })
-      .then((data) => setData(data))
-      .catch((err) => console.warn(err));
+    const fetchData = () => {
+      Tabletop.init({
+        key:
+          "https://docs.google.com/spreadsheets/u/1/d/1EoVnDcOIu9UbrVCsZrIlX0aNj0wVkIGEjuLMtaXWDVA/pubhtml",
+        simpleSheet: true,
+      })
+        .then((data) => {
+          setData(data);
+          setTimeout(fetchData, 5000);
+        })
+        .catch((err) => console.warn(err));
+    }
+    fetchData();
   }, []);
 
   const columns = [{
