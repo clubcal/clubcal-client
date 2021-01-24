@@ -80,8 +80,7 @@ export default function App() {
     <>
       <h1>Clubhouse Events</h1>
       <BootstrapTable
-        bootstrap4
-        responsive
+        classes="table-responsive"
         keyField="id"
         data={data}
         columns={columns}
