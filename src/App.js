@@ -4,10 +4,14 @@ import Tabletop from "tabletop";
 import BootstrapTable from "react-bootstrap-table-next";
 import filterFactory, {
   textFilter,
+  dateFilter
 } from "react-bootstrap-table2-filter";
 import paginationFactory from "react-bootstrap-table2-paginator";
+import Moment from 'react-moment';
+import 'moment-timezone';
 
 import "./App.css";
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
 export default function App() {
   const [data, setData] = useState([]);
@@ -22,32 +26,42 @@ export default function App() {
       .catch((err) => console.warn(err));
   }, []);
 
-  const columns = [
-    {
-      dataField: "Datetime",
-      text: "Datetime",
-      sort: true,
-    },
-    {
-      dataField: "Room",
-      text: "Room",
-      filter: textFilter(),
-    },
-    {
-      dataField: "Description",
-      text: "Description",
-      filter: textFilter(),
-    },
-    {
-      dataField: "Moderators",
-      text: "Moderators",
-      filter: textFilter(),
-    },
-    {
-      dataField: "Event Link",
-      text: "Link",
-    },
-  ];
+  const columns = [{
+    dataField: 'Datetime_iso',
+    text: 'Datetime',
+    formatter: (cell, row, rowIndex, extraData) => (
+      row['Datetime']
+    ),
+    sort: true
+  },{
+    dataField: 'Room',
+    text: 'Room',
+    filter: textFilter()
+  }, {
+    dataField: 'Description',
+    text: 'Description',
+    filter: textFilter()
+  }, {
+    dataField: 'Moderators',
+    text: 'Moderators',
+    filter: textFilter()
+  }, {
+    dataField: 'Event Link',
+    text: 'Link',
+    formatter: (cell, row, rowIndex, extraData) => (
+      <div>
+        <a href={row['Event Link']} target="_blank">Join room</a>
+      </div>
+    )
+  }, {
+    dataField: 'Calendar',
+    text: 'Calendar',
+    formatter: (cell, row, rowIndex, extraData) => (
+      <div> 
+        <a href={row['Calendar']} target="_blank">+</a>
+      </div>
+    )
+  }];
 
   const defaultSorted = [
     {
