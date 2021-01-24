@@ -1,3 +1,9 @@
-# Basic Example
+# clubhouse.cal (client)
 
-A simple [create-react-app](CRA-README.md) setup, showcasing one of the latest React-Bootstrap components!
+## Set Up
+
+- Run `yarn`.
+
+## Run
+
+- Run `yarn start`
