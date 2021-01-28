@@ -1,24 +1,22 @@
-import React, { useEffect, useState, Fragment } from "react"
+import { useEffect, useState } from "react"
 
-import Tabletop from "tabletop"
 import BootstrapTable from "react-bootstrap-table-next"
 import filterFactory, { textFilter } from "react-bootstrap-table2-filter"
 import paginationFactory from "react-bootstrap-table2-paginator"
-import "moment-timezone"
 
 import "./App.css"
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css"
+
+// const API_URL = "http://0.0.0.0:8080/events/"
+const API_URL = "https://clubcal-server.herokuapp.com/events/"
 
 export default function App() {
   const [data, setData] = useState([])
 
   useEffect(() => {
     const fetchData = () => {
-      Tabletop.init({
-        key:
-          "https://docs.google.com/spreadsheets/u/1/d/1EoVnDcOIu9UbrVCsZrIlX0aNj0wVkIGEjuLMtaXWDVA/pubhtml",
-        simpleSheet: true
-      })
+      fetch(API_URL)
+        .then((response) => response.json())
         .then((data: never[]) => {
           setData(data)
           setTimeout(fetchData, 5000)
@@ -30,32 +28,32 @@ export default function App() {
 
   const columns = [
     {
-      dataField: "Datetime_iso",
+      dataField: "scheduled_for",
       text: "Datetime",
-      formatter: (cell: any, row: any, rowIndex: Number, extraData: any) => row["Datetime"],
+      formatter: (cell: any, row: any, rowIndex: Number, extraData: any) => row["scheduled_for"],
       sort: true
     },
     {
-      dataField: "Room",
+      dataField: "name",
       text: "Room",
       filter: textFilter()
     },
     {
-      dataField: "Description",
+      dataField: "description",
       text: "Description",
       filter: textFilter()
     },
     {
-      dataField: "Moderators",
+      dataField: "moderators",
       text: "Moderators",
       filter: textFilter()
     },
     {
-      dataField: "Event Link",
+      dataField: "link",
       text: "Link",
       formatter: (cell: any, row: any, rowIndex: Number, extraData: any) => (
         <div>
-          <a href={row["Event Link"]} target="_blank">
+          <a href={row["link"]} target="_blank" rel="noreferrer">
             Join room
           </a>
         </div>
@@ -66,7 +64,13 @@ export default function App() {
       text: "Calendar",
       formatter: (cell: any, row: any, rowIndex: Number, extraData: any) => (
         <div>
-          <a href={row["Calendar"]} target="_blank">
+          {/* TODO: add missing "from time" / "to time" to the calendar based on at least `scheduled_for` */}
+          <a
+            href={`https://calendar.google.com/calendar/r/eventedit?text=${
+              row["name"]
+            }&details=${encodeURI(row["description"])}+${encodeURI(row["link"])}`}
+            target="_blank"
+            rel="noreferrer">
             +
           </a>
         </div>
@@ -86,7 +90,7 @@ export default function App() {
       <h1>Clubhouse Events</h1>
       <BootstrapTable
         classes="table-responsive"
-        keyField="id"
+        keyField="ID"
         data={data}
         columns={columns}
         defaultSorted={defaultSorted}
