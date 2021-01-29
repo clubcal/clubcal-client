@@ -1,8 +1,11 @@
+body {
+  background-color: rgba(242,239,228);
+}
+
 .header {
   text-align: center;
 }
 
 .main {
   padding: 20px;
-  background-color: rgba(242,239,228);
 }
