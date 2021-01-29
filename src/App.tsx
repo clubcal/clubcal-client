@@ -7,9 +7,6 @@ import BootstrapTable from "react-bootstrap-table-next"
 import filterFactory, { textFilter } from "react-bootstrap-table2-filter"
 import paginationFactory from "react-bootstrap-table2-paginator"
 
-import "./App.css"
-import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css"
-
 // const API_URL = "http://0.0.0.0:8080/events/"
 const API_URL = "https://clubcal-server.herokuapp.com/events/?limit=150"
 
@@ -99,7 +96,7 @@ export default function App() {
   ]
 
   return (
-    <>
+    <div className="main">
       <h1>Clubhouse Events</h1>
       <BootstrapTable
         classes="table-responsive"
@@ -110,6 +107,6 @@ export default function App() {
         filter={filterFactory()}
         pagination={paginationFactory()}
       />
-    </>
+    </div>
   )
 }
