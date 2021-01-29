@@ -4,11 +4,13 @@ import BootstrapTable from "react-bootstrap-table-next"
 import filterFactory, { textFilter } from "react-bootstrap-table2-filter"
 import paginationFactory from "react-bootstrap-table2-paginator"
 
+import Moment from "react-moment"
+
 import "./App.css"
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css"
 
 // const API_URL = "http://0.0.0.0:8080/events/"
-const API_URL = "https://clubcal-server.herokuapp.com/events/"
+const API_URL = "https://clubcal-server.herokuapp.com/events/?limit=150"
 
 export default function App() {
   const [data, setData] = useState([])
@@ -30,7 +32,9 @@ export default function App() {
     {
       dataField: "scheduled_for",
       text: "Datetime",
-      formatter: (cell: any, row: any, rowIndex: Number, extraData: any) => row["scheduled_for"],
+      formatter: (cell: any, row: any, rowIndex: Number, extraData: any) => (
+        <Moment date={row["scheduled_for"]} />
+      ),
       sort: true
     },
     {
