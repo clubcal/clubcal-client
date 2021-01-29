@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
 
+import moment from "moment"
+import Moment from "react-moment"
+
 import BootstrapTable from "react-bootstrap-table-next"
 import filterFactory, { textFilter } from "react-bootstrap-table2-filter"
 import paginationFactory from "react-bootstrap-table2-paginator"
-
-import Moment from "react-moment"
 
 import "./App.css"
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css"
@@ -66,19 +67,27 @@ export default function App() {
     {
       dataField: "Calendar",
       text: "Calendar",
-      formatter: (cell: any, row: any, rowIndex: Number, extraData: any) => (
-        <div>
-          {/* TODO: add missing "from time" / "to time" to the calendar based on at least `scheduled_for` */}
-          <a
-            href={`https://calendar.google.com/calendar/r/eventedit?text=${
-              row["name"]
-            }&details=${encodeURI(row["description"])}+${encodeURI(row["link"])}`}
-            target="_blank"
-            rel="noreferrer">
-            +
-          </a>
-        </div>
-      )
+      formatter: (cell: any, row: any, rowIndex: Number, extraData: any) => {
+        const frmStr = "yyyyMMDDTHHmmss\\Z"
+        const eventStart = moment.utc(row["scheduled_for"])
+        const eventEnd = moment.utc(row["scheduled_for"]).add(1, "hours")
+        return (
+          <div>
+            <a
+              href={`https://calendar.google.com/calendar/r/eventedit?text=${
+                row["name"]
+              }&details=${encodeURI(row["description"])}+${encodeURI(
+                row["link"]
+              )}&dates=${encodeURI(eventStart.format(frmStr))}/${encodeURI(
+                eventEnd.format(frmStr)
+              )}`}
+              target="_blank"
+              rel="noreferrer">
+              +
+            </a>
+          </div>
+        )
+      }
     }
   ]
 
